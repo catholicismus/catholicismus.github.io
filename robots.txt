@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://catholicismus.github.io/sitemap.xml
