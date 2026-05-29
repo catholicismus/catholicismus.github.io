@@ -34,7 +34,7 @@
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhkD-nxO2tY3WJMVAi7DFDEqUIsW5AId1y2eh_Y6xjS9hZ3EsirRHxRTKKyQfhA-WUqg/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbziiADH9LF1gBCcmsejqTWEP1L5mjY8GnYnZ7pHNZdQhvb_IHH5Kg6eQW-VdSTGLhHioQ/exec";
     fetch(SCRIPT_URL).then(res=>res.json()).then(data => {
         const tbody = document.getElementById('tableBody'); tbody.innerHTML = "";
         data.forEach((row, i) => {
