@@ -52,11 +52,32 @@
             menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
         };
 
+        // ஆடியோவை கையாள தேவையான வேரியபிள்கள்
+        let currentAudio = null;
+        let isPlaying = false;
+
         window.playSound = () => {
-    const audio = new Audio('sound.mp3');
-    audio.loop = true; // இது பாடலை முடிவில்லாமல் ஓடிக்கொண்டே இருக்கச் செய்யும்
-    audio.play();
-};
+            const btn = event.currentTarget; // கிளிக் செய்யப்பட்ட பட்டனை அடையாளம் காண
+
+            if (isPlaying) {
+                // ஒலியை நிறுத்து
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                btn.style.backgroundColor = "#fff"; // பழைய நிறம்
+                btn.style.color = "#8b0000";         // பழைய ஐகான் நிறம்
+                isPlaying = false;
+            } else {
+                // ஒலியைத் தொடங்கு
+                if (!currentAudio) {
+                    currentAudio = new Audio('sound.mp3');
+                    currentAudio.loop = true;
+                }
+                currentAudio.play();
+                btn.style.backgroundColor = "#d4af37"; // புதிய நிறம் (தங்கம்)
+                btn.style.color = "#fff";             // ஐகான் நிறம் வெள்ளை
+                isPlaying = true;
+            }
+        };
 
         window.confirmDownload = () => overlay.style.display = 'flex';
         window.closePopup = () => overlay.style.display = 'none';
