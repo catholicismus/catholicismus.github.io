@@ -52,7 +52,11 @@
             menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
         };
 
-        window.playSound = () => new Audio('sound.mp3').play();
+        window.playSound = () => {
+    const audio = new Audio('sound.mp3');
+    audio.loop = true; // இது பாடலை முடிவில்லாமல் ஓடிக்கொண்டே இருக்கச் செய்யும்
+    audio.play();
+};
 
         window.confirmDownload = () => overlay.style.display = 'flex';
         window.closePopup = () => overlay.style.display = 'none';
