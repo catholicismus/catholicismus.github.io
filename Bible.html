@@ -1,36 +1,74 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bible</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Bible Readings | Catholicismus</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #fdf6e3; /* Light Golden Background */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Header: Maroon background */
+        header {
+            background-color: #8b0000;
+            color: #d4af37;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        /* Golden Line below header */
+        .golden-line {
+            height: 3px;
+            background-color: #d4af37;
+            width: 100%;
+        }
+
+        h1 { 
+            font-size: 1.8em; 
+            letter-spacing: 1px; 
+            text-transform: uppercase;
+        }
+
+        /* Container for external content */
+        .readings-container {
+            flex-grow: 1;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* Iframe: Full width, no borders */
+        iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+            display: block;
+        }
+    </style>
 </head>
-<body style="font-family: 'Georgia', serif; background-color: #a31a1a; margin: 0; padding: 0; color: #fff;">
-<div style="text-align: center; padding: 20px; background-color: #630e10; border-bottom: 5px solid #d4af37;">
-
-    
 <body>
- <center> <h1>
-    HOLY BIBLE </center>
-  </h1>
-  <center><h1> WILL BE BACK IN SOON</h1></center>
- 
-    <div style="max-width: 900px; margin: 20px auto; background-color: #fff; color: #333; padding: 20px; border-radius: 15px;">
-        
-       
 
-            
-            <a href="Bible.html" style="flex: 1; min-width: 280px; text-decoration: none; color: #333;  padding: 20px; text-align: center;">
-                <h2 style="color: #a31a1a; margin-top: 0;">BIBLE</h2>
-                <img src="bible.jpg" alt="Bible" style="width: 100%; max-width: 200px; height: auto; border: 1px dashed #333; margin: 10px auto; display: block;">
-            </a>
-        </div>
-  
-  <div style="text-align: center; padding: 20px; background-color: #630e10; border-bottom: 5px solid #d4af37; color: white;">
-        
+    <header>
+        <img src="bible.jpg" alt="Biblee Image" style="width: 100%; max-width: 250px; height: auto;">
+        <h1>Daily Bible Readings</h1>
         <a href="home.html" style="color: #d4af37; text-decoration: none;">← Back to Home</a>
+    </header>
+    <div class="golden-line"></div>
+
+    <div class="readings-container">
+        <iframe src="https://universalis.com/today/mass.htm" title="Daily Bible Readings"></iframe>
     </div>
-</div>
+
 </body>
 </html>
