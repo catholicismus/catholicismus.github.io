@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function() {
         Image Disclaimer: This website is a non-profit, educational project. 
         Images are used for informational purposes. If you are the owner of an image 
         and would like it removed or credited differently, please 
-        <a href="mailto:your-email@example.com" style="color: #666; text-decoration: underline;">contact me</a>.
+        <a href="mailto:your-arulsheela360@gmail.com" style="color: #666; text-decoration: underline;">contact me</a>.
     `;
 
     target.appendChild(disclaimer);
