@@ -94,3 +94,28 @@
         window.closePopup = () => overlay.style.display = 'none';
     };
 })();
+
+// Add Footer Disclaimer
+document.addEventListener("DOMContentLoaded", function() {
+    let target = document.querySelector("footer");
+    if (!target) {
+        target = document.body;
+    }
+
+    const disclaimer = document.createElement("p");
+    disclaimer.style.fontSize = "0.75rem";
+    disclaimer.style.color = "#666";
+    disclaimer.style.textAlign = "center";
+    disclaimer.style.marginTop = "40px";
+    disclaimer.style.padding = "20px";
+    disclaimer.style.borderTop = "1px solid #ddd";
+    
+    disclaimer.innerHTML = `
+        Image Disclaimer: This website is a non-profit, educational project. 
+        Images are used for informational purposes. If you are the owner of an image 
+        and would like it removed or credited differently, please 
+        <a href="mailto:your-email@example.com" style="color: #666; text-decoration: underline;">contact me</a>.
+    `;
+
+    target.appendChild(disclaimer);
+});
