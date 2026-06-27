@@ -127,31 +127,33 @@
         };
     };
 })();
-
-// Add Footer Disclaimer
+// Add Footer Disclaimer (Universal for all pages)
 document.addEventListener("DOMContentLoaded", function() {
-    // Select the footer (this assumes your HTML has a <footer> tag)
-    const footer = document.querySelector("footer");
+    // Attempt to find an existing footer
+    let target = document.querySelector("footer");
 
-    if (footer) {
-        const disclaimer = document.createElement("p");
-        
-        // Applying styles directly
-        disclaimer.style.fontSize = "0.75rem";
-        disclaimer.style.color = "#666";
-        disclaimer.style.textAlign = "center";
-        disclaimer.style.marginTop = "20px";
-        disclaimer.style.padding = "10px";
-        disclaimer.style.borderTop = "1px solid #ddd"; // Optional: adds a subtle line divider
-        
-        // The disclaimer content
-        disclaimer.innerHTML = `
-            Image Disclaimer: This website is a non-profit, educational project. 
-            Images are used for informational purposes. If you are the owner of an image 
-            and would like it removed or credited differently, please 
-            <a href="mailto:your-email@example.com" style="color: #666; text-decoration: underline;">contact me</a>.
-        `;
-
-        footer.appendChild(disclaimer);
+    // If no footer exists, use the end of the body
+    if (!target) {
+        target = document.body;
     }
+
+    const disclaimer = document.createElement("p");
+    
+    // Applying styles
+    disclaimer.style.fontSize = "0.75rem";
+    disclaimer.style.color = "#666";
+    disclaimer.style.textAlign = "center";
+    disclaimer.style.marginTop = "40px"; // Increased margin for pages without footers
+    disclaimer.style.padding = "20px";
+    disclaimer.style.borderTop = "1px solid #ddd"; 
+    
+    // The disclaimer content
+    disclaimer.innerHTML = `
+        Image Disclaimer: This website is a non-profit, educational project. 
+        Images are used for informational purposes. If you are the owner of an image 
+        and would like it removed or credited differently, please 
+        <a href="mailto:your-email@example.com" style="color: #666; text-decoration: underline;">contact me</a>.
+    `;
+
+    target.appendChild(disclaimer);
 });
