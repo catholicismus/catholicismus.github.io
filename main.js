@@ -46,7 +46,6 @@
         `;
         document.body.appendChild(container);
 
-        // Pop-up HTML
         const overlay = document.createElement('div');
         overlay.className = 'overlay';
         overlay.innerHTML = `
@@ -111,7 +110,10 @@
 
         window.downloadPage = async () => {
             closePopup();
+            const menu = document.querySelector('.menu-container');
+            menu.style.display = 'none';
             const canvas = await html2canvas(document.body);
+            menu.style.display = 'flex';
             const link = document.createElement('a');
             link.download = 'catholicism.jpg';
             link.href = canvas.toDataURL("image/jpeg");
@@ -119,7 +121,10 @@
         };
 
         window.sharePage = async () => {
+            const menu = document.querySelector('.menu-container');
+            menu.style.display = 'none';
             const canvas = await html2canvas(document.body);
+            menu.style.display = 'flex';
             canvas.toBlob(async (blob) => {
                 const file = new File([blob], "page.jpg", { type: "image/jpeg" });
                 if (navigator.canShare) await navigator.share({ files: [file] });
@@ -128,7 +133,6 @@
     };
 })();
 
-// Add Footer Disclaimer (Universal for all pages)
 document.addEventListener("DOMContentLoaded", function() {
     let target = document.querySelector("footer");
     if (!target) { target = document.body; }
@@ -148,11 +152,8 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
     target.appendChild(disclaimer);
 
-    // TV Remote & Accessibility Support
     const style = document.createElement('style');
-    style.innerHTML = `
-        :focus { outline: 4px solid #d4af37 !important; border-radius: 5px; }
-    `;
+    style.innerHTML = `:focus { outline: 4px solid #d4af37 !important; border-radius: 5px; }`;
     document.head.appendChild(style);
 
     document.querySelectorAll('a, button').forEach(el => {
@@ -161,4 +162,4 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
-        
+                
