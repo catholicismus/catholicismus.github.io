@@ -127,33 +127,38 @@
         };
     };
 })();
+
 // Add Footer Disclaimer (Universal for all pages)
 document.addEventListener("DOMContentLoaded", function() {
-    // Attempt to find an existing footer
     let target = document.querySelector("footer");
-
-    // If no footer exists, use the end of the body
-    if (!target) {
-        target = document.body;
-    }
+    if (!target) { target = document.body; }
 
     const disclaimer = document.createElement("p");
-    
-    // Applying styles
     disclaimer.style.fontSize = "0.75rem";
     disclaimer.style.color = "#666";
     disclaimer.style.textAlign = "center";
-    disclaimer.style.marginTop = "40px"; // Increased margin for pages without footers
+    disclaimer.style.marginTop = "40px";
     disclaimer.style.padding = "20px";
     disclaimer.style.borderTop = "1px solid #ddd"; 
-    
-    // The disclaimer content
     disclaimer.innerHTML = `
         Image Disclaimer: This website is a non-profit, educational project. 
         Images are used for informational purposes. If you are the owner of an image 
         and would like it removed or credited differently, please 
-        <a href="mailto:your-arulsheela360@gmail.com" style="color: #666; text-decoration: underline;">contact me</a>.
+        <a href="mailto:arulsheela360@gmail.com" style="color: #666; text-decoration: underline;">contact me</a>.
     `;
-
     target.appendChild(disclaimer);
+
+    // TV Remote & Accessibility Support
+    const style = document.createElement('style');
+    style.innerHTML = `
+        :focus { outline: 4px solid #d4af37 !important; border-radius: 5px; }
+    `;
+    document.head.appendChild(style);
+
+    document.querySelectorAll('a, button').forEach(el => {
+        if (!el.getAttribute('aria-label')) {
+            el.setAttribute('aria-label', el.innerText.trim() || el.title || 'Interactive element');
+        }
+    });
 });
+        
