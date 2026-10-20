@@ -117,5 +117,85 @@
         <span style="font-size: 0.9em;">New creations must be shared under the same license terms as the original.</span>
     </div>
 </footer>
+<!-- Voice Assistant (Triggered by saying "Hi Mic" or "Hi Mike") -->
+<div id="voice-assistant-container" style="display: none;"></div>
+
+<script>
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (SpeechRecognition) {
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+
+    // Optional text-to-speech reply function
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // Auto-start listening in the background
+    try {
+      recognition.start();
+    } catch (e) {
+      console.log("Recognition start error:", e);
+    }
+
+    recognition.onresult = (event) => {
+      const current = event.resultIndex;
+      const transcript = event.results[current][0].transcript.trim().toLowerCase();
+      console.log("Heard:", transcript);
+
+      const matchesAny = (keywords) => keywords.some(kw => transcript.includes(kw));
+
+      // 1. Activation trigger: "hi mic" or "hi mike"
+      if (transcript.includes("hi mic") || transcript.includes("hi mike")) {
+        speak("Yes, I am listening");
+      }
+      
+      // 2. Navigation Rules
+      else if (matchesAny(["eucharist", "eucharistic", "eucharistic miracles", "holy communion", "communion", "miracle", "miracles"])) {
+        window.location.href = "https://catholicismus.github.io/Eucharist.html";
+      }
+      else if (matchesAny(["saint", "saints", "holy people", "holy person"])) {
+        window.location.href = "https://catholicismus.github.io/Saint.html";
+      }
+      else if (matchesAny(["mother mary", "mother mery", "mery", "mary", "mother of god", "virgin mary"])) {
+        window.location.href = "https://catholicismus.github.io/mother.html";
+      }
+      else if (matchesAny(["join", "member", "become member", "membership", "join as member"])) {
+        window.location.href = "https://catholicismus.github.io/join.html";
+      }
+      else if (matchesAny(["bible", "bible verses", "holy book", "scripture", "gospel"])) {
+        window.location.href = "https://catholicismus.github.io/Bible.html";
+      }
+      else if (transcript.includes("scroll down") || transcript.includes("down")) {
+        window.scrollBy({ top: 450, behavior: 'smooth' });
+      } 
+      else if (transcript.includes("scroll up") || transcript.includes("up")) {
+        window.scrollBy({ top: -450, behavior: 'smooth' });
+      }
+    };
+
+    // Keep recognition running continuously if it disconnects
+    recognition.onend = () => {
+      try {
+        recognition.start();
+      } catch (e) {}
+    };
+
+    recognition.onerror = () => {
+      try {
+        recognition.start();
+      } catch (e) {}
+    };
+  }
+</script>
+    
 </body>
 </html>
