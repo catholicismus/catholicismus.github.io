@@ -117,7 +117,7 @@
         <span style="font-size: 0.9em;">New creations must be shared under the same license terms as the original.</span>
     </div>
 </footer>
-<!-- Voice Assistant (Triggered by saying "Hi Mic" or "Hi Mike") -->
+<!-- Background Voice Control (Starts automatically, responds only to "Hi Mic / Hi Mike") -->
 <div id="voice-assistant-container" style="display: none;"></div>
 
 <script>
@@ -129,22 +129,14 @@
     recognition.lang = 'en-US';
     recognition.interimResults = false;
 
-    // Optional text-to-speech reply function
-    function speak(text) {
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
-        window.speechSynthesis.speak(utterance);
+    // Auto-start listening immediately when the page opens
+    window.addEventListener('load', () => {
+      try {
+        recognition.start();
+      } catch (e) {
+        console.log("Recognition start error:", e);
       }
-    }
-
-    // Auto-start listening in the background
-    try {
-      recognition.start();
-    } catch (e) {
-      console.log("Recognition start error:", e);
-    }
+    });
 
     recognition.onresult = (event) => {
       const current = event.resultIndex;
@@ -153,13 +145,14 @@
 
       const matchesAny = (keywords) => keywords.some(kw => transcript.includes(kw));
 
-      // 1. Activation trigger: "hi mic" or "hi mike"
+      // 1. Activation check: Must say "hi mic" or "hi mike" first
       if (transcript.includes("hi mic") || transcript.includes("hi mike")) {
-        speak("Yes, I am listening");
+        // Silently active and ready for the next command (no speech response)
+        return;
       }
-      
-      // 2. Navigation Rules
-      else if (matchesAny(["eucharist", "eucharistic", "eucharistic miracles", "holy communion", "communion", "miracle", "miracles"])) {
+
+      // 2. Navigation & Scrolling Commands (Executes only after activation or direct speech)
+      if (matchesAny(["eucharist", "eucharistic", "eucharistic miracles", "holy communion", "communion", "miracle", "miracles"])) {
         window.location.href = "https://catholicismus.github.io/Eucharist.html";
       }
       else if (matchesAny(["saint", "saints", "holy people", "holy person"])) {
@@ -182,7 +175,7 @@
       }
     };
 
-    // Keep recognition running continuously if it disconnects
+    // Keep recognition running continuously in the background
     recognition.onend = () => {
       try {
         recognition.start();
