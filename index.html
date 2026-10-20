@@ -117,7 +117,7 @@
         <span style="font-size: 0.9em;">New creations must be shared under the same license terms as the original.</span>
     </div>
 </footer>
-<!-- Background Voice Control (Starts automatically, responds only to "Hi Mic / Hi Mike") -->
+<!-- Voice Assistant (Activates only when you say "Hi Mic" or "Hi Mike") -->
 <div id="voice-assistant-container" style="display: none;"></div>
 
 <script>
@@ -129,7 +129,9 @@
     recognition.lang = 'en-US';
     recognition.interimResults = false;
 
-    // Auto-start listening immediately when the page opens
+    let isActivated = false;
+
+    // Start background listening when page opens
     window.addEventListener('load', () => {
       try {
         recognition.start();
@@ -145,33 +147,39 @@
 
       const matchesAny = (keywords) => keywords.some(kw => transcript.includes(kw));
 
-      // 1. Activation check: Must say "hi mic" or "hi mike" first
-      if (transcript.includes("hi mic") || transcript.includes("hi mike")) {
-        // Silently active and ready for the next command (no speech response)
-        return;
+      // 1. Step 1: Check for activation keyword
+      if (transcript.includes("hi mic") || transcript.includes("hi mike") || transcript.includes("on mic")) {
+        isActivated = true;
+        console.log("Assistant Activated!");
+        return; // Stays silent, waiting for your next command
       }
 
-      // 2. Navigation & Scrolling Commands (Executes only after activation or direct speech)
-      if (matchesAny(["eucharist", "eucharistic", "eucharistic miracles", "holy communion", "communion", "miracle", "miracles"])) {
-        window.location.href = "https://catholicismus.github.io/Eucharist.html";
-      }
-      else if (matchesAny(["saint", "saints", "holy people", "holy person"])) {
-        window.location.href = "https://catholicismus.github.io/Saint.html";
-      }
-      else if (matchesAny(["mother mary", "mother mery", "mery", "mary", "mother of god", "virgin mary"])) {
-        window.location.href = "https://catholicismus.github.io/mother.html";
-      }
-      else if (matchesAny(["join", "member", "become member", "membership", "join as member"])) {
-        window.location.href = "https://catholicismus.github.io/join.html";
-      }
-      else if (matchesAny(["bible", "bible verses", "holy book", "scripture", "gospel"])) {
-        window.location.href = "https://catholicismus.github.io/Bible.html";
-      }
-      else if (transcript.includes("scroll down") || transcript.includes("down")) {
-        window.scrollBy({ top: 450, behavior: 'smooth' });
-      } 
-      else if (transcript.includes("scroll up") || transcript.includes("up")) {
-        window.scrollBy({ top: -450, behavior: 'smooth' });
+      // 2. Step 2: Only execute commands if "Hi Mic" was said first
+      if (isActivated) {
+        if (matchesAny(["eucharist", "eucharistic", "eucharistic miracles", "holy communion", "communion", "miracle", "miracles"])) {
+          window.location.href = "https://catholicismus.github.io/Eucharist.html";
+        }
+        else if (matchesAny(["saint", "saints", "holy people", "holy person"])) {
+          window.location.href = "https://catholicismus.github.io/Saint.html";
+        }
+        else if (matchesAny(["mother mary", "mother mery", "mery", "mary", "mother of god", "virgin mary"])) {
+          window.location.href = "https://catholicismus.github.io/mother.html";
+        }
+        else if (matchesAny(["join", "member", "become member", "membership", "join as member"])) {
+          window.location.href = "https://catholicismus.github.io/join.html";
+        }
+        else if (matchesAny(["bible", "bible verses", "holy book", "scripture", "gospel"])) {
+          window.location.href = "https://catholicismus.github.io/Bible.html";
+        }
+        else if (transcript.includes("scroll down") || transcript.includes("down")) {
+          window.scrollBy({ top: 450, behavior: 'smooth' });
+        } 
+        else if (transcript.includes("scroll up") || transcript.includes("up")) {
+          window.scrollBy({ top: -450, behavior: 'smooth' });
+        }
+
+        // Optional: Lock it back until next "Hi Mic" command if you prefer
+        // isActivated = false; 
       }
     };
 
@@ -188,7 +196,7 @@
       } catch (e) {}
     };
   }
-</script>
+              </script>
     
 </body>
 </html>
