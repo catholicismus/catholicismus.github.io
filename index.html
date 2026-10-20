@@ -118,4 +118,155 @@
     </div>
 </footer>
 </body>
+<!-- Catholicismus Voice Assistant (Positioned above Settings Gear) -->
+<div id="catholicismus-voice-container" class="no-capture" style="position: fixed; bottom: 90px; right: 24px; z-index: 9999; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  
+  <!-- Status Badge -->
+  <div id="voice-status" style="
+    background: rgba(15, 23, 42, 0.9);
+    color: #e2e8f0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 6px 12px;
+    margin-bottom: 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    display: none;
+    text-align: center;
+    transition: all 0.3s ease;
+  ">
+    Listening...
+  </div>
+
+  <!-- Circular/Floating Mic Button -->
+  <button id="voice-toggle-btn" title="Voice Control" style="
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #f8fafc;
+    border: 2px solid #d4af37;
+    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0 auto;
+  ">
+    <svg id="mic-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+      <line x1="12" y1="19" x2="12" y2="22"></line>
+    </svg>
+  </button>
+</div>
+
+<style>
+  #voice-toggle-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 12px rgba(212, 175, 55, 0.5);
+    border-color: #f59e0b;
+  }
+
+  /* Automatically hide mic icon when printing / saving as PDF or document */
+  @media print {
+    #catholicismus-voice-container {
+      display: none !important;
+    }
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.8; }
+  }
+</style>
+
+<!-- Voice & Navigation Logic -->
+<script>
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    console.warn("Speech recognition is not supported in this browser.");
+  } else {
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.lang = 'en-US';
+
+    const toggleBtn = document.getElementById('voice-toggle-btn');
+    const statusDiv = document.getElementById('voice-status');
+    const micIcon = document.getElementById('mic-icon');
+    let isListening = false;
+
+    toggleBtn.addEventListener('click', () => {
+      if (!isListening) {
+        recognition.start();
+      } else {
+        recognition.stop();
+      }
+    });
+
+    recognition.onstart = () => {
+      isListening = true;
+      statusDiv.style.display = 'block';
+      statusDiv.innerHTML = '<span style="display: inline-block; width: 8px; height: 8px; background-color: #10b981; border-radius: 50%; margin-right: 6px; animation: pulse 1.5s infinite;"></span> Listening...';
+      toggleBtn.style.background = "linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%)";
+      toggleBtn.style.borderColor = "#ef4444";
+      micIcon.setAttribute("stroke", "#fca5a5");
+    };
+
+    recognition.onend = () => {
+      isListening = false;
+      statusDiv.style.display = 'none';
+      toggleBtn.style.background = "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)";
+      toggleBtn.style.borderColor = "#d4af37";
+      micIcon.setAttribute("stroke", "#d4af37");
+    };
+
+    recognition.onresult = (event) => {
+      const current = event.resultIndex;
+      const transcript = event.results[current][0].transcript.trim().toLowerCase();
+      console.log("Voice Command heard:", transcript);
+
+      statusDiv.innerHTML = `<span style="color: #d4af37;">Navigating:</span> "${transcript}"`;
+
+      const matchesAny = (keywords) => keywords.some(kw => transcript.includes(kw));
+
+      // Page Navigation
+      if (matchesAny(["eucharist", "eucharistic", "eucharistic miracles", "holy communion", "communion", "miracle", "miracles"])) {
+        window.location.href = "https://catholicismus.github.io/Eucharist.html";
+      }
+      else if (matchesAny(["saint", "saints", "holy people", "holy person"])) {
+        window.location.href = "https://catholicismus.github.io/Saint.html";
+      }
+      else if (matchesAny(["mother mary", "mother mery", "mery", "mary", "mother of god", "virgin mary"])) {
+        window.location.href = "https://catholicismus.github.io/mother.html";
+      }
+      else if (matchesAny(["join", "member", "become member", "membership", "join as member"])) {
+        window.location.href = "https://catholicismus.github.io/join.html";
+      }
+      else if (matchesAny(["bible", "bible verses", "holy book", "scripture", "gospel"])) {
+        window.location.href = "https://catholicismus.github.io/Bible.html";
+      }
+      else if (transcript.includes("scroll down") || transcript.includes("down")) {
+        window.scrollBy({ top: 450, behavior: 'smooth' });
+      } 
+      else if (transcript.includes("scroll up") || transcript.includes("up")) {
+        window.scrollBy({ top: -450, behavior: 'smooth' });
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error", event.error);
+      statusDiv.style.display = 'block';
+      statusDiv.style.color = '#ef4444';
+      statusDiv.textContent = "Mic error";
+    };
+  }
+</script>
+    
 </html>
