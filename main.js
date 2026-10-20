@@ -42,7 +42,7 @@
                 <button class="sub-btn" onclick="sharePage()" title="Share"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg></button>
                 <button class="sub-btn" onclick="showTranslate()" title="Translate"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04z"/></svg></button>
             </div>
-            <button class="main-btn" onclick="toggleMenu()"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.63l-1.92-3.33c-.12-.22-.38-.31-.61-.22l-2.38.96c-.5-.38-1.03-.7-1.6-.96l-.36-2.52c-.04-.24-.25-.42-.5-.42h-3.84c-.26 0-.47.18-.5-.42l-.36 2.52c-.57.26-1.1.59-1.6.96l-2.38-.96c-.24-.1-.5-.01-.61.22l-1.92 3.33c-.11.22-.06.49.12.63l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.63l1.92 3.33c.12.22.38.31.61.22l2.38-.96c.5.38 1.03.7 1.6.96l.36 2.52c.04.24.25.42.5.42h3.84c.26 0 .47-.18.5-.42l.36-2.52c.57-.26 1.1-.59 1.6-.96l2.38.96c.24.1.5.01.61-.22l1.92-3.33c.11-.22.06-.49-.12-.63l-2.03-1.58zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg></button>
+            <button class="main-btn" onclick="toggleMenu()"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.63l-1.92-3.33c-.12-.22-.38-.31-.61-.22l-2.38.96c-.5-.38-1.03-.7-1.6-.96l-.36-2.52c-.04-.24-.25-.42-.5-.42h-3.84c-.26 0-.47.18-.5-.42l-.36 2.52c-.57.26-1.1.59-1.6.96l-2.38-.96c-.24-.1-.5-.01-.61.22l-1.92 3.33c-.11.22-.06.49.12.63l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.63l1.92 3.33c.12.22.38.31.61.22l2.38-.96c.5.38 1.03.7 1.6.96l.36 2.52c.04.24.25.42.5.42h3.84c-.26 0 .47-.18.5-.42l.36-2.52c.57-.26 1.1-.59 1.6-.96l2.38.96c.24.1.5.01.61-.22l1.92-3.33c.11-.22.06-.49-.12-.63l-2.03-1.58zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg></button>
         `;
         document.body.appendChild(container);
 
@@ -108,23 +108,39 @@
         
         window.closePopup = () => overlay.style.display = 'none';
 
+        // டவுன்லோட் செய்யும் போது மெனு மற்றும் இண்டெக்ஸ் பக்கத்தில் உள்ள மைக்கையும் மறைக்கும் வசதி
         window.downloadPage = async () => {
             closePopup();
             const menu = document.querySelector('.menu-container');
-            menu.style.display = 'none';
+            const voiceContainer = document.getElementById('voice-assistant-container');
+            
+            if (menu) menu.style.display = 'none';
+            if (voiceContainer) voiceContainer.style.display = 'none';
+
             const canvas = await html2canvas(document.body);
-            menu.style.display = 'flex';
+
+            if (menu) menu.style.display = 'flex';
+            if (voiceContainer) voiceContainer.style.display = 'flex';
+
             const link = document.createElement('a');
             link.download = 'catholicism.jpg';
             link.href = canvas.toDataURL("image/jpeg");
             link.click();
         };
 
+        // ஷேர் செய்யும் போதும் மெனு மற்றும் இண்டெக்ஸ் பக்கத்தில் உள்ள மைக்கையும் மறைக்கும் வசதி
         window.sharePage = async () => {
             const menu = document.querySelector('.menu-container');
-            menu.style.display = 'none';
+            const voiceContainer = document.getElementById('voice-assistant-container');
+
+            if (menu) menu.style.display = 'none';
+            if (voiceContainer) voiceContainer.style.display = 'none';
+
             const canvas = await html2canvas(document.body);
-            menu.style.display = 'flex';
+
+            if (menu) menu.style.display = 'flex';
+            if (voiceContainer) voiceContainer.style.display = 'flex';
+
             canvas.toBlob(async (blob) => {
                 const file = new File([blob], "page.jpg", { type: "image/jpeg" });
                 if (navigator.canShare) await navigator.share({ files: [file] });
@@ -162,4 +178,3 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
-                
